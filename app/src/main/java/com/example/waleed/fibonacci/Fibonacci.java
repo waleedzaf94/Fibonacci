@@ -1,5 +1,6 @@
 package com.example.waleed.fibonacci;
 
+import android.content.Context;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.text.Editable;
@@ -11,6 +12,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -57,12 +59,26 @@ public class Fibonacci extends ActionBarActivity {
             public void onClick(View v) {
                 String inputNum = inTxt.getText().toString();
                 int n = Integer.parseInt(inputNum);
-                String sequence = getFibSequence(n);
-                ansView.setText(sequence.subSequence(0, sequence.length()));
-                try{
-                    InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-                    imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
-                } catch (Exception e){}
+                if (n > 480){
+                    Context context = getApplicationContext();
+                    CharSequence text = "Overflow! Please enter a value less than 480";
+                    int duration = Toast.LENGTH_LONG;
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
+                    inTxt.setText("");
+                    ansView.setText("");
+                    calcBtn.setEnabled(false);
+                    clearBtn.setEnabled(false);
+                }
+                else {
+                    String sequence = getFibSequence(n);
+                    ansView.setText(sequence.subSequence(0, sequence.length()));
+                    try {
+                        InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+                        imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+                    } catch (Exception e) {
+                    }
+                }
             }
         });
 
@@ -86,7 +102,7 @@ public class Fibonacci extends ActionBarActivity {
         if (n > 1) { fib.add(new BigInteger(1)); count++; }
         while (count < n) {
             //fib.add(fib.get(count - 1) + fib.get(count - 2));
-            fib.add(bi.sum(fib.get(count-1), fib.get(count-2)));
+            fib.add(bi.sum(fib.get(count - 1), fib.get(count - 2)));
             count++;
         }
         String sequence = "";
