@@ -78,20 +78,17 @@ public class Fibonacci extends ActionBarActivity {
     }
 
     private String getFibSequence(int n){
-        //ArrayList<Long> fib = new ArrayList<Long>();
-        ArrayList<BigInteger> fib = new ArrayList<BigInteger>();
-        BigInteger bi = new BigInteger(0);
+        ArrayList<Long> fib = new ArrayList<Long>();
         int count = 0;
-        if (n > 0) { fib.add(new BigInteger(1)); count++; }
-        if (n > 1) { fib.add(new BigInteger(1)); count++; }
+        if (n > 0) { fib.add((long)1); count++; }
+        if (n > 1) { fib.add((long)1); count++; }
         while (count < n) {
-            //fib.add(fib.get(count - 1) + fib.get(count - 2));
-            fib.add(bi.sum(fib.get(count-1), fib.get(count-2)));
+            fib.add(fib.get(count - 1) + fib.get(count - 2));
             count++;
         }
         String sequence = "";
         for (int i=0; i < count; i++){
-            sequence = sequence + fib.get(i).getNumber() + " ";
+            sequence = sequence + fib.get(i).toString() + " ";
         }
         return sequence;
     }
@@ -124,10 +121,6 @@ class BigInteger{
     private int length;
     private int [] value = new int [100];
 
-    public BigInteger(int num){
-        setNumber(""+num);
-    }
-
     public void setNumber( String number ){
         length = number.length();
         int j=0;
@@ -145,8 +138,8 @@ class BigInteger{
         return s;
     }
 
-    public static BigInteger sum( final BigInteger a, final BigInteger b){
-        BigInteger c = new BigInteger(0);
+    public BigInteger sum( final BigInteger a, final BigInteger b){
+        BigInteger c = new BigInteger();
         int carry = 0;
         int i;
         for( i = 0 ; i<a.length || i<b.length; i++ ){
